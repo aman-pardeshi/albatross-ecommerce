@@ -15,3 +15,31 @@ code {
 main {
   min-height: 80vh;
 }
+
+h3 {
+  padding: 1rem 0;
+}
+
+.rating span {
+  margin: 0.1rem;
+}
+
+h1 {
+  font-size: 1.8rem;
+  padding: 1rem 0;
+}
+
+h2 {
+  font-size: 1.4rem;
+  padding: 0.5rem 0;
+}
+
+.card-hover {
+  transition: all 0.9s ease;
+  cursor: pointer;
+}
+
+.card-hover:hover {
+  box-shadow: 5px 6px 6px 2px #e9ecef;
+  transform: scale(1.05);
+}
