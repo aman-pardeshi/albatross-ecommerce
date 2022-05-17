@@ -1,13 +1,23 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import Rating from '../components/Rating';
-import { Row, Col, Image, ListGroup, Card, Button } from 'react-bootstrap';
+import {
+  Row,
+  Col,
+  Image,
+  ListGroup,
+  Card,
+  Button,
+  Overlay,
+  Tooltip,
+} from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
 import Loader from '../components/Loader';
 import Message from '../components/Message';
 import { productDetails } from '../redux/actions/productActions';
 import { Form } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
+import { addToCart } from '../redux/actions/cartActions';
 
 const ProductScreen = () => {
   const [qty, setQty] = useState(1);
@@ -19,12 +29,18 @@ const ProductScreen = () => {
   const productDetail = useSelector((state) => state.productDetail);
   const { loading, error, product } = productDetail;
 
+  const [itemAddedToCartMsg, setItemAddedToCartMsg] = useState(false);
+  const target = useRef(null);
+
   useEffect(() => {
     dispatch(productDetails(params.id));
   }, [params, dispatch]);
 
   const addToCartHandler = () => {
-    navigate(`/cart/${productId}?qty=${qty}`);
+    dispatch(addToCart(productId, qty));
+    setItemAddedToCartMsg(true);
+    setTimeout(() => setItemAddedToCartMsg(false), 3000);
+    // navigate(`/cart/${productId}?qty=${qty}`);
   };
   return (
     <>
@@ -109,9 +125,21 @@ const ProductScreen = () => {
                       className='btn-block w-100'
                       type='button'
                       disabled={product.countInStock === 0}
+                      ref={target}
                     >
                       Add to Cart
                     </Button>
+                    <Overlay
+                      target={target.current}
+                      show={itemAddedToCartMsg}
+                      placement='top'
+                    >
+                      {(props) => (
+                        <Tooltip id='overlay-message' {...props}>
+                          Item added to cart
+                        </Tooltip>
+                      )}
+                    </Overlay>
                   </ListGroup.Item>
                 </ListGroup>
               </Card>

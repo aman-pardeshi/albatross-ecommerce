@@ -7,6 +7,7 @@ import categories from './data/categories.js';
 
 import productRoute from './routes/productRoutes.js';
 import userRoutes from './routes/userRoutes.js';
+import orderRoute from './routes/orderRoute.js';
 
 dotenv.config();
 connectDB();
@@ -18,6 +19,7 @@ app.get('/categories', (req, res) => res.json(categories));
 
 app.use('/api/products', productRoute);
 app.use('/api/users', userRoutes);
+app.use('/api/orders', orderRoute);
 
 app.use(notFound);
 app.use(errorHandler);

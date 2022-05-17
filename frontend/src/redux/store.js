@@ -15,6 +15,10 @@ import {
 } from './reducers/userReducers';
 
 import { composeWithDevTools } from 'redux-devtools-extension';
+import {
+  orderCreateReducer,
+  orderDetailsReducer,
+} from './reducers/orderReducers';
 
 const cartItemsFromStorage = localStorage.getItem('cartItems')
   ? JSON.parse(localStorage.getItem('cartItems'))
@@ -24,8 +28,20 @@ const userInfoFromStorage = localStorage.getItem('userInfo')
   ? JSON.parse(localStorage.getItem('userInfo'))
   : null;
 
+const shippingAddressFromStorage = localStorage.getItem('shippingAddress')
+  ? JSON.parse(localStorage.getItem('shippingAddress'))
+  : {};
+
+const paymentMehodFromStorage = localStorage.getItem('paymentMethod')
+  ? JSON.parse(localStorage.getItem('paymentMethod'))
+  : {};
+
 const INITIAL_STATE = {
-  cart: { cartItems: cartItemsFromStorage },
+  cart: {
+    cartItems: cartItemsFromStorage,
+    shippingAddress: shippingAddressFromStorage,
+    paymentMethod: paymentMehodFromStorage,
+  },
   userLogin: { userInfo: userInfoFromStorage },
 };
 
@@ -41,6 +57,8 @@ const store = configureStore(
       userRegister: userRegisterReducer,
       userDetails: userDetailsReducer,
       userUpdateProfile: userProfileUpdateReducer,
+      orderCreate: orderCreateReducer,
+      orderDetails: orderDetailsReducer,
     }),
   },
   INITIAL_STATE,

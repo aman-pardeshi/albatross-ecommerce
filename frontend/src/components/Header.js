@@ -7,7 +7,11 @@ import { logout } from '../redux/actions/userActions';
 const Header = () => {
   const dispatch = useDispatch();
 
-  const { userInfo } = useSelector((state) => state.userLogin);
+  const userLogin = useSelector((state) => state.userLogin);
+  const { userInfo } = userLogin;
+
+  const cart = useSelector((state) => state.cart);
+  const { cartItems } = cart;
 
   const logoutHandler = () => {
     dispatch(logout());
@@ -25,7 +29,24 @@ const Header = () => {
             <Nav className='ms-auto'>
               <LinkContainer to='/cart'>
                 <Nav.Link>
-                  <i className='fas fa-shopping-cart px-2'></i>Cart
+                  <i className='fas fa-shopping-cart px-2'></i>
+                  {cartItems.length ? (
+                    <span
+                      style={{
+                        backgroundColor: '#ff6161',
+                        border: '1px solid #fff',
+                        padding: '3px 8px',
+                        borderRadius: '50px',
+                        color: '#f0f0f0',
+                      }}
+                    >
+                      {cartItems.length}
+                    </span>
+                  ) : (
+                    ''
+                  )}
+                  {'  '}
+                  Cart
                 </Nav.Link>
               </LinkContainer>
 

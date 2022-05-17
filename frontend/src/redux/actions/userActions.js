@@ -13,7 +13,6 @@ export const login = (email, password) => async (dispatch, getState) => {
     );
 
     dispatch({ type: USER_CONSTANTS.USER_LOGIN_SUCCESS, payload: data });
-    console.log(getState().userLogin);
 
     localStorage.setItem('userInfo', JSON.stringify(data));
   } catch (error) {
