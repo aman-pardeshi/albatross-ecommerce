@@ -45,11 +45,19 @@ const getOrderById = asyncHandler(async (req, res) => {
   );
 
   if (order) {
-    res.json(order);
-  } else {
-    res.status(404);
-    throw new Error('Order not found');
+    return res.json({
+      success: true,
+      msg: 'Order found',
+      data: order
+    });
   }
+
+  return res.status(404).json({
+    success: false,
+    msg: 'Order not found',
+    data: null
+  })
+
 });
 
 export { createNewOrder, getOrderById };
