@@ -15,24 +15,35 @@ const createNewOrder = asyncHandler(async (req, res) => {
     totalPrice,
   } = req.body;
 
-  if (orderItems && orderItems.length === 0) {
-    res.status(400);
-    throw new Error('No order items');
-  } else {
-    const order = new Order({
-      orderItems,
-      shippingAddress,
-      paymentMethod,
-      itemsPrice,
-      taxPrice,
-      shippingPrice,
-      totalPrice,
-      user: req.user._id,
-    });
+  orderItems.length = 0
 
-    const createdOrder = await order.save();
-    res.status(201).json(createdOrder);
-  }
+  if (Array.isArray(orderItems) && !orderItems.length) {
+    return res.status(400).json({
+      success: false,
+      msg: 'Order items empty',
+      data: null
+    });
+  } 
+  
+  const order = new Order({
+    orderItems,
+    shippingAddress,
+    paymentMethod,
+    itemsPrice,
+    taxPrice,
+    shippingPrice,
+    totalPrice,
+    user: req.user._id,
+  });
+
+  const createdOrder = await order.save();
+
+  return res.status(201).json({
+    success: true,
+    msg: 'Order found',
+    data: createdOrder
+  });
+
 });
 
 // @Description: Get order by ID
@@ -45,11 +56,19 @@ const getOrderById = asyncHandler(async (req, res) => {
   );
 
   if (order) {
-    res.json(order);
-  } else {
-    res.status(404);
-    throw new Error('Order not found');
+    return res.json({
+      success: true,
+      msg: 'Order found',
+      data: order
+    });
   }
+
+  return res.status(404).json({
+    success: false,
+    msg: 'Order not found',
+    data: null
+  })
+
 });
 
 export { createNewOrder, getOrderById };
